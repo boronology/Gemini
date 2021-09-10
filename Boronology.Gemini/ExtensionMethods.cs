@@ -34,7 +34,7 @@ namespace Boronology.Gemini
                 else
                 {
                     //再帰的なCloneが必要
-                    throw new NotImplementedException();
+                    return InternalCloneRecursive(type, value);
                 }
             }
             else if (type.IsClass)
@@ -49,13 +49,18 @@ namespace Boronology.Gemini
                 else
                 {
                     //再帰的なCloneが必要
-                    throw new NotImplementedException();
+                    return InternalCloneRecursive(type, value);
                 }
             }
             else
             {
                 throw new ArgumentException($"typeは具体的な型のはず。type = {type.Name}, value = {value}");
             }
+        }
+
+        private static object InternalCloneRecursive(Type sourcetype, object sourceValue)
+        {
+            throw new NotImplementedException();
         }
 
     }
