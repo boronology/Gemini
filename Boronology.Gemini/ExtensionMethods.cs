@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Reflection;
 namespace Boronology.Gemini
 {
     public static class ExtensionMethods
@@ -60,7 +60,33 @@ namespace Boronology.Gemini
 
         private static object InternalCloneRecursive(Type sourcetype, object sourceValue)
         {
-            throw new NotImplementedException();
+            object clone;
+            if (sourcetype.IsValueType)
+            {
+                clone = sourceValue;
+            }
+            else
+            {
+                clone = System.Runtime.Serialization.FormatterServices.GetSafeUninitializedObject(sourcetype);
+            }
+
+            Type baseType = sourcetype;
+            while(true)
+            {
+                //publicフィールド・privateフィールド・backing field全部取れる
+                foreach(var field in baseType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy))
+                {
+                    field.SetValue(clone, InternalClone(field.FieldType, field.GetValue(sourceValue)));
+                }
+
+                if (sourcetype == baseType.BaseType || baseType == null || baseType == typeof(ValueType))
+                {
+                    break;
+                }
+                baseType = baseType.BaseType;
+            }
+
+            return clone;
         }
 
     }
