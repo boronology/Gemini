@@ -6,6 +6,11 @@ namespace Boronology.Gemini
     {
         public static object DeepClone (this object value)
         {
+            return InternalClone(value);
+        }
+
+        private static object InternalClone(object value)
+        {
             if (object.Equals(value, null))
             {
                 return null;
@@ -43,13 +48,7 @@ namespace Boronology.Gemini
                 Array cloneArray = Array.CreateInstance(type.GetElementType(), sourceArray.Length);
                 for (int i = 0; i < sourceArray.Length; i++)
                 {
-                    object element = sourceArray.GetValue(i);
-                    object clonedElement = null;
-                    if (!object.Equals(element, null))
-                    {
-                        clonedElement = InternalClone(element.GetType(), element);
-                    }
-                    cloneArray.SetValue(clonedElement, i);
+                    cloneArray.SetValue(InternalClone(sourceArray.GetValue(i)), i);
                 }
                 return cloneArray;
             }
@@ -96,13 +95,7 @@ namespace Boronology.Gemini
                 //publicフィールド・privateフィールド・backing field全部取れる
                 foreach(var field in baseType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy))
                 {
-                    var sourceElement = field.GetValue(sourceValue);
-                    object clonedElement = null;
-                    if (!object.Equals(sourceElement, null))
-                    {
-                        clonedElement = InternalClone(sourceElement.GetType(), sourceElement);
-                    }
-                    field.SetValue(clone, clonedElement);
+                    field.SetValue(clone, InternalClone(field.GetValue(sourceValue)));
                 }
 
                 if (sourcetype == baseType.BaseType || baseType.BaseType == null || baseType == typeof(ValueType))
