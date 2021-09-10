@@ -63,9 +63,16 @@ namespace UnitTest
                 new Action(() => {}),
             };
             
-            var clone = oc.DeepClone();
+            var clone = oc.DeepClone() as ObservableCollection<object>;
 
             Assert.Equal(clone, oc);
+            Assert.NotSame(clone, oc);
+
+            Assert.Equal(clone[0], oc[0]);
+            Assert.NotSame(clone[0], oc[0]);
+
+            Assert.Equal(clone[3], oc[3]);
+            Assert.NotSame(clone[3], oc[3]);
 
         }
     }

@@ -60,6 +60,12 @@ namespace Boronology.Gemini
                     string str = value as string;
                     return new string(str.ToCharArray());
                 }
+                else if(type == typeof(Delegate) || type.IsSubclassOf(typeof(Delegate)))
+                {
+                    //関数オブジェクトは複製しない
+                    Delegate sourceDelegate = (Delegate)value;
+                    return sourceDelegate.Clone();
+                }
                 else
                 {
                     //再帰的なCloneが必要
