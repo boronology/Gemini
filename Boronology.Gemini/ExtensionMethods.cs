@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Reflection;
 namespace Boronology.Gemini
 {
@@ -36,6 +36,18 @@ namespace Boronology.Gemini
                     //再帰的なCloneが必要
                     return InternalCloneRecursive(type, value);
                 }
+            }
+            else if (type.IsArray)
+            {
+                Array sourceArray = (Array)value;
+                Array cloneArray = Array.CreateInstance(type.GetElementType(), sourceArray.Length);
+                for (int i = 0; i < sourceArray.Length; i++)
+                {
+                    var element = sourceArray.GetValue(i);
+
+                    cloneArray.SetValue(InternalClone(element.GetType(), element), i);
+                }
+                return cloneArray;
             }
             else if (type.IsClass)
             {
