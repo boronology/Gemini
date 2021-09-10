@@ -29,11 +29,12 @@ namespace Boronology.Gemini
                 }
                 else if (type.IsPrimitive)
                 {
-                    //プリミティブ型はそのまま返せる
+                    //プリミティブ型は単純なのでそのまま返せる
                     return value;
                 }
                 else if (type == typeof(decimal))
                 {
+                    //Decimalもプリミティブではないが単純
                     return value;
                 }
                 else
@@ -56,6 +57,7 @@ namespace Boronology.Gemini
             {
                 if (type == typeof(string))
                 {
+                    //文字列はインターン化される場合があるため非効率
                     string str = value as string;
                     return new string(str.ToCharArray());
                 }
@@ -89,6 +91,7 @@ namespace Boronology.Gemini
                 clone = System.Runtime.Serialization.FormatterServices.GetSafeUninitializedObject(sourcetype);
             }
 
+            //GetFieldsはその型で宣言したフィールドしか取得できない（継承したフィールドは取得できない）ため継承をたどる必要がある
             Type baseType = sourcetype;
             while(true)
             {
