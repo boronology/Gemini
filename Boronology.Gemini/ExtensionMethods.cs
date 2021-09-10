@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 namespace Boronology.Gemini
 {
@@ -42,9 +42,7 @@ namespace Boronology.Gemini
                 if (type == typeof(string))
                 {
                     string str = value as string;
-
-                    //DeepCloneしてもインターン文字列になる可能性があるのでそのまま返しておく
-                    return value;
+                    return new string(str.ToCharArray());
                 }
                 else
                 {
