@@ -4,10 +4,10 @@ using Boronology.Gemini;
 
 namespace UnitTest
 {
-    public class UnitTest1
+    public class ClassTest
     {
         [Fact]
-        public void ClassTest()
+        public void ClassCloneTest()
         {
             var uri = new Uri("https://example.com", UriKind.Absolute);
             var cloned = uri.DeepClone();
