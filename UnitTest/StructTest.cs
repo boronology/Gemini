@@ -7,7 +7,7 @@ namespace UnitTest
     public class StructTest
     {
 
-        class FlatStruct
+        struct FlatStruct
         {
             public string str;
             public long l;
@@ -24,9 +24,10 @@ namespace UnitTest
 
             var cloned = (FlatStruct)s.DeepClone();
 
-            Assert.Equal(cloned, s);
             Assert.NotSame(cloned, s);
+            Assert.Equal(cloned.str, s.str);
             Assert.NotSame(cloned.str, s.str);
+            Assert.Equal(cloned.l, s.l);
         }
     }
 }
